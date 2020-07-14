@@ -1,4 +1,4 @@
-Vftrace is build with ant using the build.xml file.
+Vfview is build with ant using the build.xml file.
 
 The default source path is the vfview top-level directory. To build in a different location, use
 ant -Dsrcdir=<path_to_src>.
