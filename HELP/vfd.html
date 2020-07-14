@@ -1,0 +1,215 @@
+<h2><a name=VFD></a>
+  VFD file format
+</h2>
+What does VFD even mean?<br>
+  HEADER:<br>
+  <table style="width:100%", border=1>
+	<tr>
+		<th>Size [Bytes]</th>
+		<th>Name</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>vfd_version</td>
+		<td>VFD version the file has been created under</td>
+	</tr>
+	<tr>
+		<td>16</td>
+		<td>vftr_fileid</td>
+		<td>Individual ID of vfd file</td>
+	</tr>
+	<tr>
+		<td>24</td>
+		<td>date</td>
+		<td>Date at which the vfd file has been created</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>vftr_interval</td>
+		<td>Sampling time interval in microseconds</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>threads</td>
+		<td>Number of OpenMP threads</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>thread</td>
+		<td>Associated OpenMP therad</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>tasks</td>
+		<td>Number of MPI ranks</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>task</td>
+		<td>Associated MPI rank</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>cycletime</td>
+		<td>CPU cycle time in (unit?) as measured by vftrace</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>inittime</td>
+		<td>Time of first sample in (unit?)</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>runtime</td>
+		<td>Total runtime in (unit?)</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>samplecount</td>
+		<td>Number of registered samples</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>stackscount</td>
+		<td>Number of registered stacks</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>stacksoffset</td>
+		<td>File position at which stack data begins</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>sampleoffset</td>
+		<td>File position at which sample data begins</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>reserved</td>
+		<td>Unclear</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>mpi_info_dim</td>
+		<td>Length of the array containing the MPI data types</td>
+	</tr>
+  </table>
+
+STACK INFO:<br>
+  <table style="width:100%", border=1>
+	<tr>
+		<th>Size [Bytes]</th>
+		<th>Name</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>id</td>
+		<td>Stack ID</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>levels</td>
+		<td>Number of functions in the stack</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>caller</td>
+		<td>Stack ID of the calling function</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>len</td>
+		<td>Length of the succeeding function name string (in bytes)</td>
+	</tr>
+	<tr>
+		<td>len</td>
+		<td>rec</td>
+		<td>Name of the function at the top of the stack</td>
+	</tr>
+ </table>
+SAMPLE INFO:<br>
+  <table style="width:100%", border=1>
+	<tr>
+		<th>Size [Bytes]</th>
+		<th>Name</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>sidw</td>
+		<td>Entry type of this sample (entry, exit or message)</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>stackID</td>
+		<td>ID of the associated stack</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>ldelta</td>
+		<td>Time spent in this sample in (units?)</td>
+	</tr>
+  </table>
+MESSAGE INFO:<br>
+  <table style="width:100%", border=1>
+	<tr>
+		<th>Size [Bytes]</th>
+		<th>Name</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>sidw</td>
+		<td>Entry type of this sample (entry, exit or message)</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>dir</td>
+		<td>Message direction (send / receive)</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>mpi_info_index</td>
+		<td>Index of the datatype in the internal MPI type matrix</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>peer</td>
+		<td>Rank of the sending process(?)</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>tstart</td>
+		<td>Start time of message in (units?)</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>tstop</td>
+		<td>End time of message in (units?)</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>count</td>
+		<td>Number of messages send</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>tag</td>
+		<td>Message tag</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>type</td>
+		<td>MPI datatype</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>data_type_size</td>
+		<td>Size of (custom) data type</td>
+	</tr>
+</table>
+
+
+

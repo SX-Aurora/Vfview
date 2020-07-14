@@ -1,0 +1,71 @@
+<project name="vfview" default="build" basedir=".">
+
+    <description>
+    This buildfile is used to build the vftrace viewer.
+    </description>
+
+    <!-- Ant task definitions -->
+
+
+    <!-- Global properties -->
+    <property name="work" location="work"/>
+
+    <target name="init">
+      <!-- Create the time stamp -->
+      <tstamp/>
+      <!-- Create the build directory structure used by compile -->
+      <mkdir dir="${work}"/>
+    </target>
+
+    <target name="compile"
+            depends="copy"
+            description="Compiles vfview sources">
+	<!-- Compile the relevant vfview sources... -->
+        <javac debug="true" srcdir="$(PWD)/src" destdir="${work}"
+	       verbose="no" includeantruntime="false" >
+          <compilerarg value="-Xlint:unchecked,deprecation"/>
+        </javac>
+    </target>
+
+    <target name="copy" 
+            depends="init"
+            description="Copy documentation files">
+	<copy todir="${work}">
+	    <!-- Add the other resources -->
+	    <fileset dir="HELP">
+        	<include name="*.html"/>
+        	<include name="images/*"/>
+	    </fileset>
+	</copy>
+    </target>
+
+    <target name="build" 
+            depends="compile"
+            description="Create jar file">
+	<jar destfile="vfview.jar" basedir="${work}">
+	    <manifest>
+		<attribute name="Main-Class" value="vftrace.Vftrace"/>
+		<attribute name="Title"      value="vfview"/>
+		<attribute name="Version"    value="1.0"/>
+		<attribute name="Build"      value="1.0"/>
+		<attribute name="Helpdir"    value="/home/christian/vfview/HELP"/>
+	    </manifest>
+	</jar>
+    </target>
+
+    <target name="help" 
+            description="Display detailed usage information">
+      <echo>
+          Detailed help...
+      </echo>
+    </target>
+
+    <target name="clean" 
+            description="Deletes all class files">
+	<delete verbose="false" dir="${work}">
+	</delete>
+    </target>
+
+</project>
+
+

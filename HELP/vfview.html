@@ -1,0 +1,809 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<title>Vftrace Help</title>
+</head>
+
+<body bgcolor=white lang=EN-US link="#0000EE" vlink="#551A8B" style='tab-interval:
+36.0pt'>
+
+<a name="TOP"></a>
+<h1><b>Vftrace Viewer Users Guide</b></h1>
+
+<p>
+<b>Table of Contents</b>
+</p>
+
+<ol start=1 type=1 id=mozToc>
+ <li><a href="#Introduction_">Introduction</a></li>
+ <li><a href="#mozTocId339872">Time line</a></li>
+ <li><a href="#mozTocId643838">How does it work?</a></li>
+ <li><a href="#mozTocId238737">Trace visualization</a> </li>
+ <ol start=1 type=1>
+  <li><a href="#mozTocId336058">Getting started</a></li>
+  <li><a href="#mozTocId121128">Command line options</a></li>
+  <li><a href="#mozTocId400024">Time and function names</a></li>
+  <li><a href="#mozTocId374769">Zooming</a></li>
+  <li><a href="#mozTocId84509">Colors</a></li>
+  <li><a href="#mozTocId766201">MPI message information</a></li>
+ </ol>
+ <li><a href="#mozTocId350685">Profile view</a> </li>
+ <ol start=1 type=1>
+  <li><a href="#mozTocId628936">Function profile graph</a></li>
+  <li><a href="#mozTocId894920">Call stack profile graph</a></li>
+  <li><a href="#mozTocId56609">Load balance graph</a></li>
+  <li><a href="#mozTocId586240">Communication view</a></li>
+ </ol>
+ <li><a href="#mozTocId700657">Miscellaneous</a> </li>
+ <ol start=1 type=1>
+  <li><a href="#mozTocId443529">Time measurement</a></li>
+  <li><a href="#mozTocId216205">Escape from the trace view window</a></li>
+  <li><a href="#mozTocId27782">Marking samples</a></li>
+  <li><a href="#mozTocId542525">Demo program</a></li>
+ </ol>
+ <li><a href="#Known_problems_">Known problems</a> </li>
+ <ol start=1 type=1>
+  <li><a href="#mozTocId689152">Time interval selection</a></li>
+  <li><a href="#mozTocId896909">Relative time measurement</a></li>
+  <li><a href="#mozTocId244044">Comparing traces from different jobs</a></li>
+  <li><a href="#Communication_matrix_">Communication matrix</a></li>
+ </ol>
+ <li><a href="#Disclaimer_">Disclaimer</a></li>
+</ol>
+
+<a href="#TOP">TOP</a>
+
+<h2><a name=Introduction_></a>
+  Introduction
+</h2>
+
+<p>
+  <i>Vfview</i> is a program for the graphical analysis of run time profiles given
+  in the so-called vfd file file format. It is based on <i>Vftrace</i> (visual
+  function trace), but the vfd files can in principle be origininated from any
+  program. <i>Vfview</i> presents a timeline with the call stacks of the application's MPI
+  tasks and OpenMP threads represented by color-coded bars. Particular time intervals
+  may be studied in more detail by zooming in. While moving the pointer across the
+  call stacks the time and function name fields are updated automatically. <br>
+  MPI communication can be displayed in separate windows, e.g. a detailed communication
+  matrix showing each rank.
+</p>
+
+<p>
+  <i>Vftrace</i> (visual function trace) is a tool to analyze a (parallel)
+  application using timer and/or hardware event counter information to produce
+  a detailed profile table and a set of call stack trace files. See
+  the man pages vftrace(1) and vftrace(7) for information how to compile, link
+  and execute an application with the required instrumentation to generate
+  profiles and trace files.
+</p>
+
+
+<!--
+<p>
+  There are other trace visualization tools available. These show the communication
+  information outside the context of the application, whereas vftrace visualizes the
+  communication calls on top of the complete application call stack. 
+</p>
+-->
+
+
+<a href="#TOP">TOP</a>
+
+<h2><a name=mozTocId339872></a>
+  Time line
+</h2>
+
+<p>
+Below, there are some viewer snapshots representing a number of features,
+which are discussed in detail in the sections following the table.
+</p>
+
+<table border=0 cellspacing=5 cellpadding=0 width="93%">
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0
+      width=180 height=78 id="_x0000_i1035" src="images/tn1.jpg"
+      alt="Description: Trace snippet">
+    </p>
+  </td>
+  <td>
+    <p>
+    Functions are displayed as stacked bars, representing the call stacks.<br>
+      When moving the pointer around in the graphics area, text fields representing
+      function name, time and MPI message information (if any) are automatically
+      updated.
+    </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=161 height=22 id="_x0000_i1028" src="images/tn3a.jpg"
+      alt="Description: Function name field">
+    </p>
+  </td>
+  <td>
+    <p>
+      The function name field is located at the bottom of the vftrace window.
+    </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0
+      width=135 height=39 id="_x0000_i1034" src="images/tn2.jpg"
+      alt="Description: Zoom slider">
+    </p>
+  </td>
+  <td>
+    <p>
+      A slide bar enables zooming in to max. 100000x, giving detailed
+      information in any time interval.
+    </p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=132 height=75 id="_x0000_i1033" src="images/tn5a.jpg"
+      alt="Description: Color panel">
+    </p>
+  </td>
+  <td>
+    <p>
+      A color panel gives access to various color definition options.<br>
+      To make this panel visible, select <b>Color panel</b> from the menu <b>Options</b>.
+    </p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=132 height=118 id="_x0000_i1032" src="images/tn5b.jpg"
+      alt="Description: Selection panel">
+    </p>
+  </td>
+  <td>
+    <p>
+      Functions can be color-coded using arbitrary colors selected from a color
+      chooser. The parallel routines may be highlighted by color-coding the MPI
+      routines, while rendering the application routines in gray. Or by a combination
+      of these choices.
+    </p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=136 height=16 id="_x0000_i1031" src="images/tn7.jpg"
+      alt="Description: Progress bar">
+    </p>
+  </td>
+  <td>
+    <p>
+      The progress bar located in the lower left-hand corner of the scroll panel
+      shows how much of the trace image has been processed (initially, or 
+      between horizontal scroll and zoom operations).<br>
+    </p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=218 height=77 id="_x0000_i1030" src="images/tn8.jpg"
+      alt="Description: Profile">
+    </p>
+  </td>
+  <td width="56%">
+    <p>
+      A profile graph presents the runtime profile of a particular time interval.
+      To make this panel visible, select <b>Profile panel</b> from the menu
+      <b>Options</b>.
+    </p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=152 height=78 id="_x0000_i1029" src="images/tn3c.jpg"
+      alt="Description: Time field">
+    </p>
+  </td>
+  <td>
+    <p>
+      The time field is located in the upper left scroll pane corner.
+    </p>
+  </td>
+ </tr>
+ <!-- Is this up-to-date???
+ <tr>
+  <td>
+    <p align=right>
+      <img border=0 width=201 height=82 id="_x0000_i1027" src="images/tn3b.jpg"
+      alt="Description: MPI message information">
+    </p>
+  </td>
+  <td>
+    <p>
+      When the pointer is over a trace section representing a MPI send or
+      receive function, the message information is displayed in the MPI message
+      information panel. Only supported if environment variable VFTR_MPI is set to
+      1.
+      <br>
+      To make this panel visible, select the menu <b>Options &gt; MPI panel</b>.
+    </p>
+  </td>
+ </tr>
+ -->
+ <tr>
+  <td width="40%" valign=top>
+    <p align=right>
+      <img border=0 width=187 height=176 id="_x0000_i1026" src="images/tn9.jpg"
+      alt="Description: Communication matrix">
+    </p>
+  </td>
+  <td width="56%">
+    <p>
+      The communication graph shows the message intensity between MPI ranks. 
+    </p>
+    <!-- Momentary still active?
+    <p>
+      The graph can present the accumulative communication in a specific interval or
+      the momentary communication.
+    </p>
+    -->
+    <!-- Needs update soon -->
+    <p>
+      To make this panel visible, select the menu <b>Options &gt;  Comm
+      Matrix</b>. 
+    </p>
+  </td>
+ </tr>
+</table>
+
+<a href="#TOP">TOP</a>
+
+<h2><a name=mozTocId643838></a>
+  Functional Principle
+</h2>
+
+<p>
+  The input files for the viewer are generated via function instrumentation, i.e.
+  each time a function is entered and / or exited, book-keeping is made about
+  the time spent, hardware counters etc. This information is written into vfd files.
+  Currently, the only tool to support the vfd format is <i>Vftrace</i>.<br>
+  There are two levels of detail when gathering information (each one with its
+  specific advantages and drawbacks)::
+</p>
+
+<p>
+<b>Tracing</b>: Log the time for every function entry and exit, irrespective of its
+duration.
+</p>
+
+<ol start=1 type=1>
+ <li>Advantage: High accuracy </li>
+ <li>Disadvantage: Rapidly leads to very large trace
+     data files (in the order of hundreds of MB per MPI task and OpenMP
+     thread) and very long run times of the program which is traced.</li>
+</ol>
+
+<p>
+  <b>Sampling</b>: Instead of tracing, one can sample the application’s call stack
+  by interrupting the program at regular intervals, unwind the call stack and save
+  it in the trace file.
+</p>
+
+<ul type=disc>
+ <li>Advantage: Much less data will be generated than tracing everything and the
+     runtime overhead is tolerable.</li>
+ <!-- <li>Disadvantages: Low resolution and system call overhead </li>
+	 Why system call overhead??? -->
+ <li>Disadvantages: Low resolution. </li>
+</ul>
+
+<p>
+  The low resolution is sufficient for the purpose of obtaining a reasonable
+  overview of the application’s behavior. To locate parallelization timing problems
+  (critical regions, load balance, send/receive patterns, etc.), more accuracy may
+  be needed. 
+</p>
+
+<p>
+  <i>Vftrace</i> combines both methods: Every function
+  entry and exit is timed, but only after a specific minimum time interval the
+  current call stack is recorded in the trace file. This method does not require
+  the program to be interrupted by a timer alarm (operating system involvement
+  introduces more overhead).  <!-- Related to the comment above? -->
+</p>
+
+<p>
+  To capture time-critical function calls, such as the OpenMP parallel regions and
+  the MPI functions, these events can be recorded immediately, irrespective of the
+  time relative to the sampling interval. 
+</p>
+
+<a href="#TOP">TOP</a>
+
+<h2><a name=mozTocId238737></a>
+  Trace visualization
+</h2>
+
+<h3><a name=mozTocId336058></a>
+  Invoking Vfview
+</h3>
+
+<p>
+<!-- I don't know if you can translate the jar file to an actual binary -->
+  Run <i>Vfview</i> by extracting the .jar-file:
+</p>
+
+<pre style='margin-left:36.0pt'>
+<b>java -jar vfview &ltlist of vfd files&gt</b>
+</pre>
+
+<p>
+  Alternatively, open the trace file(s) by using the file chooser: menu <b>File
+  </b>&gt; <b>Open</b>.
+</p>
+
+<p>
+  When <i>Vfview</i> reads in the trace (vfd) files, it merges them into one single
+  binary file with the suffix <i>std</i>. This is called multiplexing.
+  Currently, there is no way to specify the output file
+  name. Each time a set of vfd files is read in, the <i>.std</i> file is overwritten.
+  If you want to save the multiplexed file, rename it or move it to a different location
+  before loading the next set of trace files.
+</p>
+
+<p>
+  <b> Multiplexing takes time</b>
+</p>
+
+<p>
+  The multiplexing process may take some time for a large number of trace files. The
+  progress bar and the time field give an idea of how much time it will take. However,
+  the generated <i>.std</i> file can be used for a much faster startup of the program
+  by reading it in like any trace file
+</p>
+
+<pre style='margin-left:36.0pt'>
+<b>java -jar vfview file.std</b>
+</pre>
+
+<!-- Not yet reviewed -->
+<p>
+  <b> Mixed experiment trace files</b>
+</p>
+
+<p>
+  Mixing trace files from two different runs, e.g. using a command similar to
+</p>
+
+<pre style='margin-left:36.0pt'>
+<b>vftrace_[0-3]_0.vfd ../serial/vftrace_0_0.vfd</b>
+</pre>
+
+<p>
+  is possible, but will confuse the viewer when building the communication matrix.
+  This is a known limitation of version 1.8.0 and later. Kill the viewer manually and
+  rerun using the *.std file. The communication matrix will be empty.
+</p>
+
+<a href="#TOP">TOP</a>
+
+<h3><a name=mozTocId121128></a>
+  Command line options
+</h3>
+
+<p>
+  The following command line options are supported:
+</p>
+
+<table border=0 cellspacing=3 cellpadding=10 width="80%">
+ <colgroup><col width="106"><col width="862"></colgroup>
+ <tr>
+  <td valign=top>
+    <b>-help</b>
+  </td>
+  <td>
+    Print an overview of possible options
+  </td>
+ </tr>
+
+ <tr>
+  <td valign=top>
+    <b>-debug n</b>
+  </td>
+  <td>
+    Set the debug level to n; produces debug information on standard output.
+    The higher the level, the more output is
+    printed.<br>
+    With n set to 1, a call tree is printed for each thread at normal program
+    termination. This is the only interesting level for end users. (The higher
+    numbers are less useful for the end user than for the author).
+  </td>
+ </tr>
+ <!-- There is maxthreads, but it appears to do nothing -->
+ <tr>
+  <td>
+    <b>-mintime t</b>
+  </td>
+  <td>
+    Ignore samples recorded before time t (real in seconds).
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <b>-maxtime t</b>
+  </td>
+  <td>
+    Ignore samples recorded after time t (real in seconds).
+  </td>
+ </tr>
+ <tr>
+  <td>
+    <b>-warranty</b>
+  </td>
+  <td>
+    Print the license agreement.
+  </td>
+ </tr>
+
+</table>
+
+<h3><a name=mozTocId400024></a>
+  Profile timeline
+</h3>
+
+<p>
+  <img width=311 height=205 src="images/tn6.jpg" align=left hspace=12
+  alt="Description: Multitrace timeline sample">
+  Once the trace files have been processed,
+  the traces are displayed. A time axis is shown at the top of the trace graph
+  (numbers in seconds). Move the pointer across the scroll pane and watch the
+  time and function name fields change. 
+</p>
+
+<h3><a name=mozTocId443529></a>
+  Bookmarks (TODO: Review)
+</h3>
+
+<p>
+  To mark a specific time, left-click on the trace graph on that point in time. A
+  vertical red line represents the bookmark for this time. You will also notice, that
+  the graph will move slightly, moving the bookmark to the center of the scroll pane.
+</p>
+
+<p>
+  To remove all bookmarks, select <b>Remove bookmarks</b> in the <b>Options </b>menu.
+</p>
+
+
+<h3><a name=mozTocId443529></a>
+  Measuring time intervals
+</h3>
+
+<p>
+  The time field in
+  the upper left corner of the trace graph window displays absolute time for the
+  current pointer position in the graph. When pressing the shift key the time is
+  reset to zero for the current pointer position&nbsp; T0. Moving the pointer will
+  now update the time field with the time relative to T0. Releasing the shift key
+  restores the absolute time presentation.
+</p>
+
+<p>
+  There is a little problem when trying this the very first time (see Known Problems
+  below).
+</p>
+
+<h3><a name=mozTocId216205></a>
+  Escape from the trace view window
+</h3>
+
+<p>
+  Several windows use the position of the pointer to continuously update their content
+  (e.g. communication matrix, MPI table). When changing from one to another window,
+  moving around in the trace frame thus changes the information in these windows.
+  To avoid this, press the escape key to
+  freeze the information for the current pointer position. The pointer can now be
+  moved to another window or menu without changing the information fields. By
+  reentering the trace graph the freeze is undone.
+</p>
+
+<a href="#TOP">TOP</a>
+
+<h3><a name=mozTocId374769></a>
+  Zooming
+</h3>
+
+<p>
+  Drag the zoom slider bar to zoom in or out.&nbsp; The trace graph will be enlarged
+  in real time, but&nbsp;the graph will only be updated with more detailed
+  information once the slider is released. Until then, the zoomed-in picture is just
+  the enlarged image calculated earlier for&nbsp;the original time scale. After the
+  release of the zoom slider the display image is recomputed with the new time scale.
+  A bar in the lower left corner represents the update progress.
+<br>
+  An alternative way of zooming is by clicking (left mouse button) at the start and
+  dragging the pointer to the end of the interval of interest. This has the side
+  effect of fixing the profile graph interval (see below). 
+</p>
+
+<h3><a name=mozTocId84509></a>
+  Colors
+</h3>
+
+<p>
+  By default, all color coding is based on a hash code derived from the function
+  name. This will ensure that the same color coding will be used for the same
+  function traced in different experiments. To manipulate the color definitions,
+  select the “Options &gt; Color” panel. This will show the color control panel. 
+</p>
+
+<p>
+  Occasionally, the result is awkward when some of the colors don't have enough
+  contrast. Click the <b>Up</b> and <b>Down</b> buttons to cycle through different
+  color lookup tables. Select <b>Reset</b> to reset to the default color table.
+</p>
+
+<p>
+  To highlight the parallel regions, click on the button labeled  <b>Mark
+  MPI/OpenMP</b>.
+</p>
+
+<p>
+  To reset the color coding, click on the button labeled <b>Reset</b>.
+</p>
+
+<p>
+  The <b>Chooser</b> button is not very useful; it has the same result as the color
+  selection method described below.
+</p>
+
+<p>
+  To mark a particular application routine, move the pointer to the function of
+  interest and click the right mouse button. This will pop up a choice window: select
+  Single for a single color (via a color chooser) or Multiple to maintain the color,
+  but render all other functions in grayscale. Alternatively, enter the function's
+  name in the function name field and hit the <b> Enter</b> key. The latter method
+  also supports regular expression, so that groups of functions with a certain
+  functionality can be easily highlighted.
+</p>
+
+<h3><a name=mozTocId27782></a>
+  Marking samples
+</h3>
+
+<p>
+  The boundaries of each individual samples can be made visible by the Options
+  menu entry &quot;Mark samples&quot;. In the <i>precise</i> mode, each sample
+  corresponds to one function call.
+</p>
+
+<h3><a name=mozTocId766201></a>
+  MPI message information (TODO: Review)
+</h3>
+
+<p>
+  The trace files contain message information for the most popular point to point
+  message passing routines (send and receive). Select MPI panel in the Options menu
+  to display the message information.
+<br>
+  Notes: 
+</p>
+
+<ol start=1 type=1>
+ <li>The peer parameter shown is the MPI rank number as defined in the
+     communicator specified in the function call, translated to the rank in
+     <font face=courier>MPI_COMM_WORLD</font>.</li>
+ <li>MPI and OpenMP functions are recorded at the exact call/return times,
+     whereas all other functions are recorded at the end of a sample interval
+     defined by the <font face=courier>VFTR_INTERVAL</font> environment
+     variable (except for the precise functions matching the pattern in <font
+     face=courier>VFTR_PRECISE</font>). Because MPI function execution times
+     are usually very short, these functions may only be visible at high zoom
+     factors.</li>
+</ol>
+
+<a href="#TOP">TOP</a>
+
+<h2><a
+  name=mozTocId350685></a>Profile view
+</h2>
+
+<p>
+All
+run times are presented as percentages of the time interval displayed.
+</p>
+
+<h3><a name=mozTocId628936></a>
+  Function profile graph (TODO: Review)
+</h3>
+
+<p>
+  The function profile graph presents the runtime profile per function, called from a
+  unique location in the applications function call tree. Because a specific function
+  may be called from different locations, multiple entries of these functions may be
+  present in the profile table, one for each unique call tree location, or call
+  stack.
+<br>
+  The red rectangles represent the minimum and maximum time computed for all
+  threads. 
+<br>
+  When moving the pointer over the profile entry names, the entry name is
+  high-lighted and the full call tree is displayed in a tooltip window.
+  Simultaneously, the call stack entry presented on the time line in the trace
+  graph is also high-lighted.
+<br>
+  When clicking (left mouse button) on a profile entry, the next profile graph is
+  displayed. If the function selected is called from more than one location in the
+  call tree, the callers are summarized and presented in the call stack profile
+  graph. If there is only one location this graph is skipped and the next one
+  displayed is the load balance graph, presenting the runtime spent per application
+  thread. Both these graphs are discussed in the next two sections. 
+</p>
+
+<h3><a name=mozTocId894920></a>
+  Call stack profile graph (TODO: Review)
+</h3>
+
+<p>
+  If a function is called from several locations in the application's call tree, the
+  call stack profile graph is available, which is displayed when one of these
+  function entries is selected (left-click). The graph is similar to the function
+  profile graph, but the entries are now labeled by the caller names. The
+  high-lighting functionality is similar to that of the function profile graph.
+  Selecting one of the entries (left-click) brings up the load balance graph for that
+  particular function call stack. Clicking the <i>Select all</i> button results in a
+  load balance graph of the sum of the times spent in all call stack instances of
+  that function.
+</p>
+
+<h3><a name=mozTocId56609></a>
+  Load balance graph (TODO: Review)
+</h3>
+
+<p>
+  This graph shows how the time for a specific function or call stack is distributed
+  across the parallel threads. Moving the pointer over the entries will automatically
+  scroll the trace view to the right trace graph, in which the call stack(s) is (are)
+  high-lighted.
+</p>
+
+<a href="#TOP">TOP</a>
+
+<h3><a name=mozTocId586240></a>
+  Communication matrix (TODO: Review (is momentary still active?))
+</h3>
+
+<p>
+  The communication matrix is computed from all send/receive messages recorded in the
+  trace files. Once the <font face=courier>*.vfd</font> trace files have been read
+  and the data stored in the  <font face=courier>&lt;prog&gt;.std</font> file vftrace
+  finds all send-receive pairs (also those implied in  alltoall functions) and adds
+  these as messages in the  <font face=courier>&lt;prog&gt;.st</font>d file.
+</p>
+
+<p>
+  The communication matrix is constructed in different ways, depending on the
+  selections made in the communication graph's control panel. The comm matrix may be
+  built 
+</p>
+
+<ul type=disc>
+ <li><i>momentary</i>: who communicates with whom at any particular time;
+     moving the pointer in the trace graph causes the comm matrix to be updated
+     continuously for every pointer move.</li>
+ <li>for a <i>time interval</i>, e.g. the complete runtime or the time interval
+     visible in the trace graph after zooming in.</li>
+</ul>
+
+<p>
+  Communication between <i>cores</i>, <i>MPI tasks</i> and <i>nodes</i> can be
+  displayed.
+</p>
+
+<p>
+  The matrix displays color-coded <i>message</i> or <i>byte</i> counts.
+</p>
+
+<p>
+  Hybrid MPI and OpenMP programs are supported and vftrace should even be capable of
+  handling MPI calls from OpenMP threads (though unusual, some applications do this),
+  but this has not been tested yet.
+</p>
+
+<p>
+  MPI communicators other than <font face=courier>MPI_COMM_WORLD</font> are supported
+  by runtime translation of rank numbers to the corresponding world group rank
+  numbers. The new  <i>test_all</i> verification program includes a test
+  demonstrating this functionality.
+</p>
+
+<p>
+  Information about groups and group rank numbers are currently not preserved. If the
+  need arises, it should not be too difficult to implement.
+</p>
+
+<a href="#TOP">TOP</a>
+
+<h2><a name=VFD></a>
+  VFD file format
+</h2>
+  VFD is a binary file where stack, sample and message information are stored.
+  Its documentation can be found
+  <a href="vfd.html">here</a>.<br><br>
+
+<a href="#TOP">TOP</a>
+
+<h2><a name=Known_problems_></a>
+  Known issues
+</h2>
+
+<h3><a name=mozTocId689152></a>
+  Time interval selection
+</h3>
+
+<p>
+  When selecting a time interval using the mintime/maxtime command line options, 
+  vfview is likely to have problems finding the MPI send/receive pairs forming a
+  message. Currently, the viewer handles this situation badly and aborts (alpha
+  development stage). The  <font face=courier>&lt;prog&gt;.std</font> file 
+  generated can be used:
+<pre style='margin-left:36.0pt'>
+<b>vfview &lt;prog&gt;.std</b>
+</pre>
+  but the communication matrix will be empty.
+</p>
+
+<h3><a name=mozTocId896909></a>
+  Relative time measurement
+</h3>
+
+<p>
+The
+relative time measurement with the shift key press does not work until the pointer
+has moved out of and back into the trace graph.
+</p>
+
+<h3><a name=mozTocId244044></a>
+  Comparing traces from different jobs
+</h3>
+
+<p>
+  Vftrace can display traces from different experiments, but the current version
+  does not detect that the MPI messages are generated by unrelated executions. It
+  aborts, but the <font face=courier>&lt;prog&gt;.std</font> file is usable when
+  restarting vftrace using this file.
+</p>
+
+<a href="#TOP">TOP</a>
+
+<h2><a name="Disclaimer_"></a>
+  Disclaimer
+</h2>
+
+<ul>
+<li>
+  <i>Vftrace is provided without any warranty, expressed or implied. The authors
+  shall not be liable for any direct, indirect, or consequential damages.</i>
+</li>
+<li>
+  <i>Vftrace is not a formal NEC product. NEC shall not be liable for any direct,
+  indirect, or consequential damages.</i></b><a name=mozTocId487258></a>
+</li>
+</ul>
+
+<hr size=1 width="100%" align=center>
+
+</body>
+
+</html>
