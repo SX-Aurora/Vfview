@@ -21,7 +21,7 @@
             depends="copy"
             description="Compiles vfview sources">
 	<!-- Compile the relevant vfview sources... -->
-        <javac debug="true" srcdir="$src" destdir="${work}"
+        <javac debug="true" srcdir="src" destdir="${work}"
 	       verbose="no" includeantruntime="false" >
           <compilerarg value="-Xlint:unchecked,deprecation"/>
         </javac>
