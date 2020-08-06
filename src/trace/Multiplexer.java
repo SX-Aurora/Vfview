@@ -162,7 +162,7 @@ public class Multiplexer {
 	long    initTime;
         long    interval, longDummy=0;
         String  firstName    = (String) traceFiles.elementAt(0);
-        Pattern patRoot      = Pattern.compile( "(.*/)*([^/]*)_\\d+_\\d+\\.vfd$" );
+        Pattern patRoot      = Pattern.compile( "(.*/)*([^/]*)_\\d+\\.vfd$" );
         Pattern patTemp      = Pattern.compile( "^[^.]*" );
         Pattern patMPI       = Pattern.compile( "(^mpi_|^MPI_)" );
         Pattern patOpenMP    = Pattern.compile( "\\$\\d+$" );
@@ -181,12 +181,11 @@ public class Multiplexer {
 
         // Output file for multiplexed data
 	if (matRoot.find() ) root = matRoot.group (2);
-	//if (matRoot.group(1) != null) {
-	//	stdFilename = matRoot.group (1) + root + ".std";
-	//} else {
-	//	stdFilename = root + ".std";
-	//}
-	stdFilename = "Minimal.x_0.std";
+	if (matRoot.group(1) != null) {
+		stdFilename = matRoot.group (1) + root + ".std";
+	} else {
+		stdFilename = root + ".std";
+	}
 	outdata = new OutputTraceFile (stdFilename, OUTPUTBUFSIZE);
 	outdata.storeInt ( traceCount           );
 	outdata.storeInt ( messageCount         ); // Dummy: updated later
@@ -212,15 +211,13 @@ public class Multiplexer {
             t.traceFilename = (String) traceFiles.elementAt(trace);
             
 	    // Scratch file for each trace
-	    //if (matRoot.group(1) != null) {
-	    //	t.tmpMsgFilename = matRoot.group (1) + root + "." + trace + ".msg";
-	    //	t.tmpPreFilename = matRoot.group (1) + root + "." + trace + ".pre";
-	    //} else {
-	    //    t.tmpMsgFilename = root + "." + trace + ".msg";
-	    //    t.tmpPreFilename = root + "." + trace + ".pre";
-	    //}
-	    t.tmpMsgFilename = "Minimal.x_0.msg";
-	    t.tmpPreFilename = "Minimal.x_0.pre";
+	    if (matRoot.group(1) != null) {
+	    	t.tmpMsgFilename = matRoot.group (1) + root + "." + trace + ".msg";
+	    	t.tmpPreFilename = matRoot.group (1) + root + "." + trace + ".pre";
+	    } else {
+	        t.tmpMsgFilename = root + "." + trace + ".msg";
+	        t.tmpPreFilename = root + "." + trace + ".pre";
+	    }
 	    t.tmpMessage = new OutputTraceFile (t.tmpMsgFilename, OUTPUTBUFSIZE);
 	    t.tmpPrecise = new OutputTraceFile (t.tmpPreFilename, OUTPUTBUFSIZE);
 
