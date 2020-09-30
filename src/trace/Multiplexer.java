@@ -63,8 +63,9 @@ public class Multiplexer {
         TraceAdmin       admin;
 	private int      count;
         int              samplesRead, stackID, MPImsgID, stacksCount,
-	                 skip, sampleOffset, task, thread, preciseCount,
+	                 task, thread, preciseCount,
                          messageCount, tracenum;
+        long skip, sampleOffset;
         double           time, prevTime, offsetTime, preciseTime, sampleTime,
                          firstTime;
 	int              nPerfValues;
@@ -156,8 +157,8 @@ public class Multiplexer {
     {
         byte[]  buf = new byte[40];
         String  fileName, versionID, date, root=null;
-        int     tasks, threads, stacksCount, sampleCount,
-                stacksOffset, sampleOffset, profileOffset;
+        int     tasks, threads, stacksCount, sampleCount;
+        long    stacksOffset, sampleOffset, profileOffset;
         double  cycleTime, runTime;
 	long    initTime;
         long    interval, longDummy=0;
@@ -268,9 +269,10 @@ public class Multiplexer {
             runTime       = t.indata.readDouble();
             sampleCount   = t.indata.readInt();
             stacksCount   = t.indata.readInt();
-            stacksOffset  = t.indata.readInt();
-            sampleOffset  = t.indata.readInt();
-            profileOffset = t.indata.readInt();
+	    System.out.println ("stacksCount: " + stacksCount);
+            stacksOffset  = t.indata.readLong();
+            sampleOffset  = t.indata.readLong();
+            profileOffset = t.indata.readLong();
 	    
 	    // Default maxtime: full execution time
 	    if( maxtime == -1. ) maxtime = runTime;

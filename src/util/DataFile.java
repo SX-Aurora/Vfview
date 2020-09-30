@@ -151,11 +151,11 @@ public class DataFile
         if( littleEndian ) return Float.intBitsToFloat( byteswap(indata.readInt()));
         else               return Float.intBitsToFloat(          indata.readInt()) ;
     }
-    public void skipBytes( int count ) 
+    public void skipBytes( long count ) 
            throws IOException
     {
-	filepos += count;
-        indata.skipBytes( count );
+	filepos += (int)count;
+        indata.skipBytes( (int)count );
     }
     public void close() 
            throws IOException
