@@ -157,7 +157,8 @@ public class Multiplexer {
     {
         byte[]  buf = new byte[40];
         String  fileName, versionID, date, root=null;
-        int     tasks, threads, stacksCount, sampleCount;
+        int     tasks, threads, stacksCount;
+        int     function_sampleCount, message_sampleCount, sampleCount;
         long    stacksOffset, sampleOffset, profileOffset;
         double  cycleTime, runTime;
 	long    initTime;
@@ -267,7 +268,9 @@ public class Multiplexer {
             cycleTime     = t.indata.readDouble();
 	    initTime      = t.indata.readLong();
             runTime       = t.indata.readDouble();
-            sampleCount   = t.indata.readInt();
+            function_sampleCount  = t.indata.readInt();
+            message_sampleCount   = t.indata.readInt();
+            sampleCount   = function_sampleCount + message_sampleCount;
             stacksCount   = t.indata.readInt();
 	    System.out.println ("stacksCount: " + stacksCount);
             stacksOffset  = t.indata.readLong();
