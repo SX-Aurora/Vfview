@@ -275,7 +275,7 @@ public class Multiplexer {
 	    System.out.println ("stacksCount: " + stacksCount);
             stacksOffset  = t.indata.readLong();
             sampleOffset  = t.indata.readLong();
-            profileOffset = t.indata.readLong();
+            profileOffset = 0;
 	    
 	    // Default maxtime: full execution time
 	    if( maxtime == -1. ) maxtime = runTime;
