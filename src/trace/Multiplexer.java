@@ -785,6 +785,7 @@ public class Multiplexer {
                 int tag = t.indata.readInt();
 		long tstart = t.indata.readLong();
 		long tstop = t.indata.readLong();
+                int callingStackID = t.indata.readInt();
                 short  src    = (short) (dir==0 ? t.task : peer);
                 short  dst    = (short) (dir==1 ? t.task : peer);
 
