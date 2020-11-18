@@ -115,7 +115,7 @@ public class Multiplexer {
 
     private boolean endian = true;
 
-    private int VFD_VERSION = 1;
+    private int VFD_VERSION = 2;
     int this_vfd_version;
 
     private int    byteswap( int x ) {
