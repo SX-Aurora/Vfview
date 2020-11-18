@@ -265,8 +265,8 @@ public class Multiplexer {
             t.thread      = t.indata.readInt();
             tasks         = t.indata.readInt();
             t.task        = t.indata.readInt();
-            cycleTime     = t.indata.readDouble();
-	    initTime      = t.indata.readLong();
+            cycleTime     = 0.0;
+            initTime      = 0;
             runTime       = t.indata.readDouble();
             function_sampleCount  = t.indata.readInt();
             message_sampleCount   = t.indata.readInt();
